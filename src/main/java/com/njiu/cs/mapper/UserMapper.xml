@@ -6,4 +6,17 @@
     <select id="findByUsername" parameterType="String" resultType="com.njiu.cs.domain.User">
         SELECT id, login_name, password FROM sys_user WHERE login_name=#{username}
     </select>
+    
+    <select id="findAllUser" resultType="com.njiu.cs.domain.User">
+        SELECT * FROM sys_user WHERE del_flag=0
+    </select>
+    
+    <update id="deleteUser" parameterType="String">
+    	update sys_user
+    	<set>
+    		del_flag=1
+    	</set>
+    	where id=#{id}
+    </update>
+    
 </mapper>
