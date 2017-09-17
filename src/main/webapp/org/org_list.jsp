@@ -46,7 +46,7 @@
 			<li><a href="#" class="clear_icon">清除缓存</a></li>
 			<li><a href="#" class="admin_icon">${user.login_name}</a></li>
 			<li><a href="#" class="set_icon">账号设置</a></li>
-			<li><a href="../login.jsp" class="quit_icon">安全退出</a></li>
+			<li><a href="login.html" class="quit_icon">安全退出</a></li>
 		</ul>
 	</header>
 	<!--aside nav-->
