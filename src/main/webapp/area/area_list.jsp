@@ -11,7 +11,7 @@
 <script src="js/html5.js"></script>
 <![endif]
 -->
-<script src="../js/jquery.js"></script>
+<script src="../js/jquery-3.2.1.js"></script>
 <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
 
 <script>
@@ -90,16 +90,15 @@
 						<th>操作</th>
 					</tr>
 
-
-					<c:forEach items="${userList}" var="user">
+					<c:forEach items="${list}" var="list">
 						<tr>
-							<td align="center">${user.no}</td>
-							<td align="center">${user.name}</td>
-							<td align="center">${user.login_name}</td>
-							<td align="center">${user.email}</td>
-							<td class="center"><a href="#" title="查看订单"
-								class="link_icon" target="_blank">&#118;</a> <a
-								onclick="del(${user.id})" title="删除" class="link_icon">&#100;</a>
+							<td align="center">${list.name}</td>
+							<td align="center">${list.code}</td>
+							<td align="center">${list.type}</td>
+							<td align="center">${list.remarks}</td>
+							<td class="center">
+								<a title="查看详细信息" class="link_icon" id="test" onclick="update('${list.id},${list.name},${list.code},${list.type},${list.remarks}')">&#118;</a>
+							 	<a onclick="del('${list.id}')" title="删除" class="link_icon">&#100;</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -109,42 +108,43 @@
 		</div>
 	</section>
 
-	<form id="addArea" method="post">
+	
 		<section class="pop_bg">
 			<div class="pop_cont">
 				<!--title-->
 				<h3>新增区域</h3>
 				<!--content-->
+				<form id="addArea" action="addArea" method="post">
 				<div class="pop_cont_input">
 					<ul>
-						<li><span>上级区域:</span> <input type="text" id="parent"
-							placeholder="请输员工编号..." class="textbox" /></li>
-						<li><span class="ttl">区域名称:</span> <input type="text"
-							id="name' placeholder=" 请输入员工姓名..." class="textbox" /></li>
-						<li><span class="ttl">区域编码:</span> <input type="text"
-							id="code" placeholder="请输登录名称..." class="textbox" /></li>
-						<li><span class="ttl">区域类型:</span> <select id="type"
-							value="${curStatus}">
+						<li><span>上级区域:</span>
+						 <input type="text" id="parentId" name="parentId" placeholder="请输上级区域..." class="textbox"/></li>
+						<li><span class="ttl">区域名称:</span> 
+						<input type="text" id="name"  name="name" placeholder=" 请输入区域名称..." class="textbox" />
+						<span class="errorTips" style=display:none id="errorMessage" name="errorMessage">必填字段。。。</span></li>
+						<li><span class="ttl">区域编码:</span> <input type="text" id="code" name="code" placeholder="请输区域编码..." class="textbox" /></li>
+						<li><span class="ttl">区域类型:</span> <select id="type" name="type" class="select">
 								<option value="1">国家</option>
 								<option value="2">省份，直辖市</option>
 								<option value="3">地市</option>
 								<option value="4">区县</option>
 						</select></li>
 						<li><span class="ttl">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注:</span>
-							<input type="text" id="remark" placeholder=""
-							class="textbox" /></li>
+							<textarea id="remarks" name="remarks" placeholder="备注" class="textarea" style="width:500px;height:100px;"></textarea>
+						</li>
 					</ul>
 				</div>
+				</form>
 				<!--以pop_cont_text分界-->
 				<div class="pop_cont_text"></div>
 				<!--bottom:operate->button-->
 				<div class="btm_btn">
-					<input type="button" value="确认" class="input_btn trueBtn" /> <input
-						type="button" value="关闭" class="input_btn falseBtn" />
+					<input type="button" value="确认" class="input_btn trueBtn"/>
+					<input type="button" value="关闭" class="input_btn falseBtn"/>
 				</div>
 			</div>
 		</section>
-	</form>
+	
 
 	<style>
 .dataStatistic {
@@ -183,29 +183,22 @@
 	     });
 		 //弹出：确认按钮
 		 $(".trueBtn").click(function(){
-			var parent_id = $(".parent").val();
-			var name = $(".name").val();
-			var code = $(".code").val();
-			var type = $(".type").val();
-			var remark = $(".remark").val();
-			var data = {"parent":parent_id,name:name,code:code,type:type};
-			alert(data.toString());
-			 $.ajax({
-		          url:"addArea?"+data,
-		          type:"post",
-		          dataType:"json",   
-		       //   data:,
-		          success:function(result){
-		            if(result.status){
-		               alert(result.data);
-		            }else {
-		              alert(result.msg);
-		            }
-		          },
-		          error:function(){
-		              alert("发生异常，请重试！");
-		            }
-		       });
+				if($("#name").val()==""){
+					$("#errorMessage").show()
+					return false;
+				}
+				 $.ajax({
+			          url:"addArea",
+			          type:"post",
+			          data:$('#addArea').serialize(),
+			          success:function(result){
+			        	  $(".pop_bg").fadeOut();
+			        	  window.location.href= "../area/getAreaList";
+			          },
+			          error:function(){
+			              alert("发生异常，请重试！");
+			          }
+			       });
 		  });
 		 //弹出：取消或关闭按钮
 		 $(".falseBtn").click(function(){
@@ -215,12 +208,19 @@
 	
 	function del(id){
 	    if(confirm("确定删除当前数据？")){
-	        window.location = "../user/deleteUser?id="+id;//跳转
+	        window.location = "../area/deleteArea?id="+id;//跳转
 	    }else{
 	        return;
-
 	    }
 	}
+	
+	function update(value){
+		alert(id);
+		
+		
+	}
+	
+	
 </script>
 </body>
 </html>
