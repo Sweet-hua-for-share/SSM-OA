@@ -71,7 +71,4 @@ public class UserController {
 		return "redirect:getUserList";
 	}
 	
-	
-	
-
 }

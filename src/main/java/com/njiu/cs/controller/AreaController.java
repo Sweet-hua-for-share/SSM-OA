@@ -2,8 +2,6 @@ package com.njiu.cs.controller;
 
 import java.util.Date;
 import java.util.UUID;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
